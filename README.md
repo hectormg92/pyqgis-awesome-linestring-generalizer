@@ -1,0 +1,1 @@
+# pyqgis-awesome-linestring-generalizer
