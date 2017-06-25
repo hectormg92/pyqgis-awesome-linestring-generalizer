@@ -4,10 +4,11 @@
 ***
 
 - [Introducción y objetivos](#introducción-y-objetivos)
+    - [Algoritmos](#algoritmos)
     - [Desarrollo del formulario PyQt4 mediante Qt Designer  Designer](#desarrollo-del-formulario-pyqt4-mediante-qt-designer)
 - [Desarrollo de la práctica](#desarrollo-de-la-práctica)
-- [Resultados](#resultados)
-- [Conclusiones](#conclusiones
+- [Prueba y Resultados](#pruebas-y-resultados)
+- [Conclusiones](#conclusiones)
 
 # Introducción y Objetivos
 El proyecto final de la asignatura **`Desarrollo de aplicaciones SIG`** se ha centrado en las ideas listadas: 
@@ -56,7 +57,7 @@ En resumen, el algoritmo construye una linea desde el primer hasta el último pu
 
 **Algoritmo de suavizado de McMaster**
 También conocido como algoritmo de deslizamiento de McMaster. Este algoritmo dejará fijos el primer y último punto de la línea y calculará la nueva posición (posición media) de los demás puntos a partir de sus coordenadas y las de sus vecinos.
-Tiene un parámetro de entrada que es el número de vertices con los que calculará la media de las coordenadas de cada uno, por lo que este deberá ser un número impar (mismo número de vecinos a cada lado del vértice y el propio vértice).
+Tiene un parámetro de entrada que es el número de vertices con los que calculará la media de las coordenadas de cada uno, por lo que este deberá ser un número impar (mismo número de vecinos a cada lado del vértice y el propio vértice). Los vértices que no entren en el vecindario de suavizado se quedarán como estaban.
 
 El algoritmo seguido es el siguiente:
 
@@ -83,7 +84,9 @@ function McMaster(PointList[], nu)
 Decir que los algoritmos planteados están escritos en pseudocódigo y no responden a ningún lenguaje de programación en sí.
 Con este algoritmo lo que se conseguirá es un suavizado de las curvas por lo que éstas no serán tan acentuadas.
 
-# Proceso
+# Desarrollo del formulario PyQt4 mediante Qt Designer  Designer
+
+# Desarrollo de la práctica
 En primer lugar hemos utilizado ``uic.py`` para convertir el archivo ``.ui`` en un archivo ``.py`` que usaremos como archivo del proyecto.
 
 Hemos añadido en la parte superior del archivo los imports necesarios para realizar nuestro proyecto:
@@ -802,6 +805,11 @@ def __extractPoints(self, feature):
             i += 1
         return points
 ```
+
+
+# Pruebas y Resultados
+
+# Conclusiones
 
 En la misma clase generaLine definimos la función para aplicar el algoritmo (según), applyAlgorithm. En la cual empezaremos la edición de una capa de salida, creada en cuanto se cargue la capa de entrada, dónde se recorrerán los features de la capa de entrada, se mirará si es multipart o no, para recorrer todas las partes si es necesario, se efectuará la extracción de los puntos mediante la función antes mencionada y se aplicará el algoritmo deseado por el usuario. De esta manera obtendremos los puntos de la generalización realizada, los cuales los transformaremos a linea como linedp = QgsGeometry.fromPolyline(points), se añadirá al feature y posteriormente a la capa de salida. Finalmente se terminará la edición. Esta función devuelve la capa de salida, layer_salida.
 
