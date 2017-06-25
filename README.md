@@ -5,7 +5,7 @@
 
 - [Introducción y objetivos](#introducción-y-objetivos)
     - [Algoritmos](#algoritmos)
-    - [Desarrollo del formulario PyQt4 mediante Qt Designer  Designer](#desarrollo-del-formulario-pyqt4-mediante-qt-designer)
+    - [Desarrollo del formulario PyQt4 mediante Qt Designer](#desarrollo-del-formulario-pyqt4-mediante-qt-designer)
 - [Desarrollo de la práctica](#desarrollo-de-la-práctica)
 - [Prueba y Resultados](#pruebas-y-resultados)
 - [Conclusiones](#conclusiones)
@@ -84,7 +84,7 @@ function McMaster(PointList[], nu)
 Decir que los algoritmos planteados están escritos en pseudocódigo y no responden a ningún lenguaje de programación en sí.
 Con este algoritmo lo que se conseguirá es un suavizado de las curvas por lo que éstas no serán tan acentuadas.
 
-# Desarrollo del formulario PyQt4 mediante Qt Designer  Designer
+# Desarrollo del formulario PyQt4 mediante Qt Designer
 
 # Desarrollo de la práctica
 En primer lugar hemos utilizado ``uic.py`` para convertir el archivo ``.ui`` en un archivo ``.py`` que usaremos como archivo del proyecto.
