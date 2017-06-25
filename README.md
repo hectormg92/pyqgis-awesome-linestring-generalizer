@@ -15,7 +15,7 @@ El proyecto final de la asignatura **`Desarrollo de aplicaciones SIG`** se ha ce
 * ``(14)`` **Aplicar el algoritmo de suavizamiento **`McMaster`** empleados en** generalización cartográfica.
 Hemos decidido abordarlo desde **``QGIS (PyQGIS)``** principalmente por tratarse de software libre.
 
-# Algoritmos:
+#### Algoritmos:
  - Algoritmo de eliminación de ***``Douglas-Peucker``***
 
 ![Animación Douglas Peucker](https://upload.wikimedia.org/wikipedia/commons/3/30/Douglas-Peucker_animated.gif)
@@ -54,7 +54,7 @@ end
 
 En resumen, el algoritmo construye una linea desde el primer hasta el último punto de la linea y busca el vertice con una mayor distancia (que forme un ángulo recto) al segmento y lo agrega si está a una distancia mayor a epsilon. Con los dos segmentos formados se repetiría el proceso hasta no haber puntos o que estos no superen el umbral epsilon. Es un proceso recursivo dónde la nueva curva es generada a partir de los puntos que han permanecido tras aplicar el algoritmo.
 
-**Algoritmo de uavizado de McMaster**
+**Algoritmo de suavizado de McMaster**
 También conocido como algoritmo de deslizamiento de McMaster. Este algoritmo dejará fijos el primer y último punto de la línea y calculará la nueva posición (posición media) de los demás puntos a partir de sus coordenadas y las de sus vecinos.
 Tiene un parámetro de entrada que es el número de vertices con los que calculará la media de las coordenadas de cada uno, por lo que este deberá ser un número impar (mismo número de vecinos a cada lado del vértice y el propio vértice).
 
@@ -84,6 +84,31 @@ Decir que los algoritmos planteados están escritos en pseudocódigo y no respon
 Con este algoritmo lo que se conseguirá es un suavizado de las curvas por lo que éstas no serán tan acentuadas.
 
 # Proceso
+En primer lugar hemos utilizado ``uic.py`` para convertir el archivo ``.ui`` en un archivo ``.py`` que usaremos como archivo del proyecto.
+
+Hemos añadido en la parte superior del archivo los imports necesarios para realizar nuestro proyecto:
+
+```python
+# -*- coding: utf-8 -*-
+import math
+import sys
+import os
+from PyQt4 import QtCore, QtGui
+from qgis.core import *
+from qgis.gui import *
+import qgis
+from PyQt4.QtCore import SIGNAL, Qt
+from PyQt4.QtGui import QFileDialog, QMainWindow, QMessageBox
+from functools import partial
+```
+
+Después de los imports tomamos una referencia del **registro** de ``QGIS``:
+
+```python
+registry = QgsMapLayerRegistry.instance()
+```
+
+A continuación se muestra el código del formulario. Mostraremos solo las partes del código escritas por nosotros y evitaremos poner el código generado por uic.
 
 ```python
 # Clase MainWindow
@@ -424,7 +449,7 @@ class MainWindow(QMainWindow):
         self.verticalLayout_3.addLayout(self.canvas_container)
 ```
 
-A continuación mostramos la clase **``GeneraLine``** que es la encargada de realizar los algoritmos:
+A continuación mostramos la clase **``GeneraLine``** que es la encargada de realizar los algoritmos.
 
 ```python
 
