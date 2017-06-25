@@ -808,18 +808,35 @@ def __extractPoints(self, feature):
 
 
 # Pruebas y Resultados
+Al terminar y depurar el programa hicimos varias pruebas para ver que tal funciona.
+- Capa de Orografía (curvas)
+Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya que pierden su significado geográfico y nos inventaríamos una forma del terreno distinta, hemos probado para ver como funcionan los algorítmos sobre un curvado tan complejo con distintos valores de parámetro.
+    - Algoritmo Douglas-Peucker - distancia mínima 50
+    - Algoritmo Douglas-Peucker - distancia mínima 5
+    - Algoritmo Douglas-Peucker - distancia mínima 1
+    Vemos que el algoritmo funciona mejor para este caso con una distancia mínima pequeña.
+    - Algoritmo McMaster - vecindario 9
+    - Algoritmo McMaster - vecindario 21
+Como las curvas varían mucho en vecindarios pequeños se observa al aplicar vecindarios más grandes como el suavizado se aleja de la curva original drásicamente al realizar la media de todo el vecindario.
+
+- Capa de Hidrografía
+Para lineas menos cambiantes dependiende de nuestro próposito nos servirá uno mejor que otro. Para generalizar usaremos el algoritmo de Douglas-Peucker (eliminando puntos) y para suavizar usaremos el algorítmo de McMaster el cual atenuará los picos generados por la intersección en los vértices (curvará la linea).
+    - prueba1 _50
+    - hidro_dp_20
+
+    - hidro_mcm_9
+
 
 # Conclusiones
 
-En la misma clase generaLine definimos la función para aplicar el algoritmo (según), applyAlgorithm. En la cual empezaremos la edición de una capa de salida, creada en cuanto se cargue la capa de entrada, dónde se recorrerán los features de la capa de entrada, se mirará si es multipart o no, para recorrer todas las partes si es necesario, se efectuará la extracción de los puntos mediante la función antes mencionada y se aplicará el algoritmo deseado por el usuario. De esta manera obtendremos los puntos de la generalización realizada, los cuales los transformaremos a linea como linedp = QgsGeometry.fromPolyline(points), se añadirá al feature y posteriormente a la capa de salida. Finalmente se terminará la edición. Esta función devuelve la capa de salida, layer_salida.
+Tras realizar varias pruebas con el software generado podemos poner en la mesa distintos puntos favorables y distintos puntos a mejorar:
 
+- **Respecto al UI generado**
 
-Para la creación de la herramienta se ha utilizado QtDesigner con PyQt4. Se ha creado un diálogo gráfico con pestañas, botones, checkbox, ventana de visualización y alguna cosa más. Para su buen funcionamiento lo hemos tenido que pasar a código python y "acoplar" al programa principal, de modo que todo el programa se encuentra en un único script ejecutable desde QGis. Algunos aspectos del diálogo se han tenido que modificar desde el propio código.
-Además hemos tenido en cuenta al usuario y se ha facilitado, activando y desactivando botones (y funciones) conforme se requiere del programa.
-Por lo que si no se introduce ninguna capa, no tendremos botones activos que no sea el de cargar el SHP. Al introducir la capa (de lineas) podremos aplicar y visualizar con los parámetros que queramos los algoritmos de Douglas-Peucker o McMaster. Podremos visualizar la capa original y la suavizada y activar o desactivar esta visualización. Y podremos aplicar estos algoritmos tantas veces como queramos para visualizarlos antes de guardar y así decidir cual algoritmo (o los dos) y que valor de parámetro queremos. Una vez decididos a guardar nuestros resultados, deberemos específicar una carpeta de salida en la pestaña "Carpeta de salida" y que algoritmos queremos aplicar para guardar en los checkbox debajo de la ventana de visualización; una vez hecho esto, se activará el botón de guardar y ya podremos guardar la generalización de la capa shape que hayamos introducido.
+Se ha elaborado un UI bastante logrado que alberga muchas funcionalidades. Se podrían mejorar diversos aspectos de menor importancia que podrían ver luz en futuros releases.
 
+Un aspecto importante que no se ha llegado a conseguir pero que se puede ver en el archivo [project_sig2.py](https://github.com/hectormg92/pyqgis-awesome-linestring-generalizer/blob/master/project_sig2.py)
 
-    
     
     
     
