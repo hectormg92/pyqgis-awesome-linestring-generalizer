@@ -877,17 +877,17 @@ Para lineas menos cambiantes dependiende de nuestro próposito nos servirá uno me
 
 Primero aplicamos ``Douglas-Peucker`` sobre la capa de entrada:
 
-    |  Algoritmo |  Parámetro |
-    |---|---|
-    | Douglas-Peucker  |  15 |
+|  Algoritmo |  Parámetro |
+|---|---|
+| Douglas-Peucker  |  15 |
 
 ![PRUEBA 1 HIDRO DP 15](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba11.png)
 
 Luego aplicamos McMaster sobre la capa anterior:
 
-    |  Algoritmo |  Parámetro |
-    |---|---|
-    | McMaster  |  5 |
+|  Algoritmo |  Parámetro |
+|---|---|
+| McMaster  |  5 |
 
 ![PRUEBA 1 HIDRO MCM 5](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba22.png)
 
