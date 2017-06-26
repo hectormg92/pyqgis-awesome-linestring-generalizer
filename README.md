@@ -1,35 +1,35 @@
 # pyqgis-awesome-linestring-generalizer
 
-![AnimaciÛn Douglas Peucker](https://upload.wikimedia.org/wikipedia/commons/3/30/Douglas-Peucker_animated.gif)
+![Animaci√≥n Douglas Peucker](https://upload.wikimedia.org/wikipedia/commons/3/30/Douglas-Peucker_animated.gif)
 
-# Õndice
+# √çndice
 ***
 
-- [IntroducciÛn y objetivos](#introducciÛn-y-objetivos)
+- [Introducci√≥n y objetivos](#introducci√≥n-y-objetivos)
     - [Algoritmos](#algoritmos)
     - [Desarrollo del formulario PyQt4 mediante Qt Designer](#desarrollo-del-formulario-pyqt4-mediante-qt-designer)
-- [Desarrollo de la pr·ctica](#desarrollo-de-la-pr·ctica)
+- [Desarrollo de la pr√°ctica](#desarrollo-de-la-pr√°ctica)
 - [Prueba y Resultados](#pruebas-y-resultados)
 - [Conclusiones](#conclusiones)
 
-# IntroducciÛn y Objetivos
+# Introducci√≥n y Objetivos
 El proyecto final de la asignatura **`Desarrollo de aplicaciones SIG`** se ha centrado en las ideas listadas: 
-* ``(13)`` **Aplicar el algoritmo de eliminaciÛn de [**`Douglas Peucker`**](https://es.wikipedia.org/wiki/Algoritmo_de_Ramer%E2%80%93Douglas%E2%80%93Peucker)**
-* ``(14)`` **Aplicar el algoritmo de suavizamiento **`McMaster`** empleados en** generalizaciÛn cartogr·fica.
+* ``(13)`` **Aplicar el algoritmo de eliminaci√≥n de [**`Douglas Peucker`**](https://es.wikipedia.org/wiki/Algoritmo_de_Ramer%E2%80%93Douglas%E2%80%93Peucker)**
+* ``(14)`` **Aplicar el algoritmo de suavizamiento **`McMaster`** empleados en** generalizaci√≥n cartogr√°fica.
 Hemos decidido abordarlo desde **``QGIS (PyQGIS)``** principalmente por tratarse de software libre.
 
 #### Algoritmos:
 
- **Algoritmo de eliminaciÛn de Douglas-Peucker**
+ **Algoritmo de eliminaci√≥n de Douglas-Peucker**
  
->El algoritmo de Douglas-Peucker se usa para reducir el n˙mero de puntos utilizados en la aproximaciÛn de una curva. El objetivo del algoritmo es, dada una curva compuesta por segmentos, encontrar una curva similar aproximada con menos puntos. El algoritmo define un par·metro basado en la m·xima distancia entre la curva original y la simplificada.
+>El algoritmo de Douglas-Peucker se usa para reducir el n√∫mero de puntos utilizados en la aproximaci√≥n de una curva. El objetivo del algoritmo es, dada una curva compuesta por segmentos, encontrar una curva similar aproximada con menos puntos. El algoritmo define un par√°metro basado en la m√°xima distancia entre la curva original y la simplificada.
 
 
-El algoritmo seguido serÌa el siguiente:
+El algoritmo seguido ser√≠a el siguiente:
 
 ```javascript
 function DouglasPeucker(PointList[], epsilon)
-    // Busca el punto con la distancia m·xima
+    // Busca el punto con la distancia m√°xima
     dmax = 0
     index = 0
     end = length(PointList)
@@ -46,7 +46,7 @@ function DouglasPeucker(PointList[], epsilon)
         recResults1[] = DouglasPeucker(PointList[1...index], epsilon)
         recResults2[] = DouglasPeucker(PointList[index...end], epsilon)
  
-        // ConstrucciÛn de la lista resultado
+        // Construcci√≥n de la lista resultado
         ResultList[] = {recResults1[1...end-1] recResults2[1...end]}
     } else {
         ResultList[] = {PointList[1], PointList[end]}
@@ -56,12 +56,12 @@ function DouglasPeucker(PointList[], epsilon)
 end
 ```
 
->En resumen, el algoritmo construye una linea desde el primer hasta el ˙ltimo punto de la linea y busca el vertice con una mayor distancia (que forme un ·ngulo recto) al segmento y lo agrega si est· a una distancia mayor a epsilon. Con los dos segmentos formados se repetirÌa el proceso hasta no haber puntos o que estos no superen el umbral epsilon. Es un proceso recursivo dÛnde la nueva curva es generada a partir de los puntos que han permanecido tras aplicar el algoritmo.
+>En resumen, el algoritmo construye una linea desde el primer hasta el √∫ltimo punto de la linea y busca el vertice con una mayor distancia (que forme un √°ngulo recto) al segmento y lo agrega si est√° a una distancia mayor a epsilon. Con los dos segmentos formados se repetir√≠a el proceso hasta no haber puntos o que estos no superen el umbral epsilon. Es un proceso recursivo d√≥nde la nueva curva es generada a partir de los puntos que han permanecido tras aplicar el algoritmo.
 
 **Algoritmo de suavizado de McMaster**
 
-TambiÈn conocido como algoritmo de deslizamiento de McMaster. Este algoritmo dejar· fijos el primer y ˙ltimo punto de la lÌnea y calcular· la nueva posiciÛn (posiciÛn media) de los dem·s puntos a partir de sus coordenadas y las de sus vecinos.
-Tiene un par·metro de entrada que es el n˙mero de vertices con los que calcular· la media de las coordenadas de cada uno, por lo que este deber· ser un n˙mero impar (mismo n˙mero de vecinos a cada lado del vÈrtice y el propio vÈrtice). Los vÈrtices que no entren en el vecindario de suavizado se quedar·n como estaban.
+Tambi√©n conocido como algoritmo de deslizamiento de McMaster. Este algoritmo dejar√° fijos el primer y √∫ltimo punto de la l√≠nea y calcular√° la nueva posici√≥n (posici√≥n media) de los dem√°s puntos a partir de sus coordenadas y las de sus vecinos.
+Tiene un par√°metro de entrada que es el n√∫mero de vertices con los que calcular√° la media de las coordenadas de cada uno, por lo que este deber√° ser un n√∫mero impar (mismo n√∫mero de vecinos a cada lado del v√©rtice y el propio v√©rtice). Los v√©rtices que no entren en el vecindario de suavizado se quedar√°n como estaban.
 
 El algoritmo seguido es el siguiente:
 
@@ -85,29 +85,29 @@ function McMaster(PointList[], nu)
     return smooth_points[]
 ```
 
-Decir que los algoritmos planteados en este apartado est·n escritos en pseudocÛdigo y no responden a ning˙n lenguaje de programaciÛn en sÌ.
-Con este algoritmo lo que se conseguir· es un suavizado de las curvas por lo que Èstas no ser·n tan acentuadas.
+Decir que los algoritmos planteados en este apartado est√°n escritos en pseudoc√≥digo y no responden a ning√∫n lenguaje de programaci√≥n en s√≠.
+Con este algoritmo lo que se conseguir√° es un suavizado de las curvas por lo que √©stas no ser√°n tan acentuadas.
 
 # Desarrollo del formulario PyQt4 mediante Qt Designer
 
-En primer hemos basado el formulario en una vista de ``Tabs`` para elegir las distintas opciones **m·s importantes** como:
+En primer hemos basado el formulario en una vista de ``Tabs`` para elegir las distintas opciones **m√°s importantes** como:
 
-- ``Par·metros de los algoritmos``
+- ``Par√°metros de los algoritmos``
 - ``Carpeta de salida``
 
 En segundo lugar contamos con un separador y un Layout Horizontal que contiene los siguientes componentes:
 
-- ``Botones para activar/desactivar la visualizaciÛn`` de la capa original y la capa previsualizada.
-- ``Zoom extensiÛn`` a la capa original
+- ``Botones para activar/desactivar la visualizaci√≥n`` de la capa original y la capa previsualizada.
+- ``Zoom extensi√≥n`` a la capa original
 - ``Control de escala`` para el canvas
 
-A continuaciÛn tenemos otro Layout Horizontal que contiene un ``canvas``.
+A continuaci√≥n tenemos otro Layout Horizontal que contiene un ``canvas``.
 Seguidamente tenemos otro Layout Horizontal (entre separadores) que contiene dos checkboxes para elegir *el algoritmo que se desea aplicar*.
 
 Finalmente tenemos varios botones:
 
-- ``BotÛn para cargar un shapefile``
-- ``BotÛn para guardar``
+- ``Bot√≥n para cargar un shapefile``
+- ``Bot√≥n para guardar``
 
 ![UI 1](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/ui1.png)
 
@@ -115,11 +115,11 @@ Finalmente tenemos varios botones:
 
 ![UI 3](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/ui3.png)
 
-# Desarrollo de la pr·ctica
+# Desarrollo de la pr√°ctica
 
 En primer lugar hemos utilizado ``uic.py`` para convertir el archivo ``.ui`` en un archivo ``.py`` que usaremos como archivo del proyecto.
 
-Hemos aÒadido en la parte superior del archivo los imports necesarios para realizar nuestro proyecto:
+Hemos a√±adido en la parte superior del archivo los imports necesarios para realizar nuestro proyecto:
 
 ```python
 # -*- coding: utf-8 -*-
@@ -135,13 +135,13 @@ from PyQt4.QtGui import QFileDialog, QMainWindow, QMessageBox
 from functools import partial
 ```
 
-DespuÈs de los imports tomamos una referencia del **registro** de ``QGIS``:
+Despu√©s de los imports tomamos una referencia del **registro** de ``QGIS``:
 
 ```python
 registry = QgsMapLayerRegistry.instance()
 ```
 
-A continuaciÛn se muestra el cÛdigo del **formulario**. Mostraremos **solo las partes del cÛdigo escritas por nosotros** y evitaremos poner el cÛdigo generado por *uic*.
+A continuaci√≥n se muestra el c√≥digo del **formulario**. Mostraremos **solo las partes del c√≥digo escritas por nosotros** y evitaremos poner el c√≥digo generado por *uic*.
 
 ```python
 # Clase MainWindow
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
         # Capa original
         self.original = None
 
-        # Capa para mostrar la previsualizaciÛn
+        # Capa para mostrar la previsualizaci√≥n
         self.preview = None
 
         # Carpeta de salida de datos
@@ -171,16 +171,16 @@ class MainWindow(QMainWindow):
 
         # Conectamos los eventos con los funciones
 
-        # BotÛn previsualizar algoritmo Douglas Peucker
+        # Bot√≥n previsualizar algoritmo Douglas Peucker
         self.btn_prev_dp.clicked.connect( partial(self.__showPreviewCanvas, self.Algorithms.DOUGLAS_PEUCKER) )
 
-        # BotÛn previsualizar algoritmo McMaster
+        # Bot√≥n previsualizar algoritmo McMaster
         self.btn_prev_mcm.clicked.connect( partial(self.__showPreviewCanvas, self.Algorithms.MC_MASTER) )
 
-        # BotÛn cargar SHP
+        # Bot√≥n cargar SHP
         self.btn_load_shp.clicked.connect(self.__openDialog)
 
-        # BotÛn abrir di·logo para seleccionar carpeta de salida
+        # Bot√≥n abrir di√°logo para seleccionar carpeta de salida
         self.btn_sal.clicked.connect(self.__openDialog_folder)
 
         # Control de escala - Cuando se modifique la escala en el widget
@@ -195,7 +195,7 @@ class MainWindow(QMainWindow):
         # Checkbox Algoritmo Douglas Peucker
         self.cb_mcm.stateChanged.connect(self.activaGuardar)
 
-        # BotÛn Guardar
+        # Bot√≥n Guardar
         self.btn_do.clicked.connect(self.guardaSHP)
 
     '''
@@ -205,7 +205,7 @@ class MainWindow(QMainWindow):
     '''
     def guardaSHP(self):
 
-        # Si el checbox del algoritmo douglas peucker est· marcado
+        # Si el checbox del algoritmo douglas peucker est√° marcado
         if self.cb_dp.isChecked():
 
             # Aplicamos el algoritmo
@@ -222,7 +222,7 @@ class MainWindow(QMainWindow):
             # Guardamos la capa
             QgsVectorFileWriter.writeAsVectorFormat(self.simplify.layer_salida, filepath, 'utf-8', None, "ESRI Shapefile")
 
-        # Si el checbox del algoritmo McMaster est· marcado
+        # Si el checbox del algoritmo McMaster est√° marcado
         if self.cb_mcm.isChecked():
 
             # Aplicamos el algoritmo
@@ -239,32 +239,32 @@ class MainWindow(QMainWindow):
             # Guardamos la capa
             QgsVectorFileWriter.writeAsVectorFormat(self.simplify.layer_salida, filepath, 'utf-8', None, "ESRI Shapefile")
 
-        # Mostramos un mensaje de informaciÛn
-        QMessageBox.information(None, u'…xito', u'Guardado con Èxito en : '+ str(self.folder))
+        # Mostramos un mensaje de informaci√≥n
+        QMessageBox.information(None, u'√âxito', u'Guardado con √©xito en : '+ str(self.folder))
 
     '''
     @method: activaGuardar
-    @brief: Activa el botÛn de guardar dependiendo de los checbox marcados
+    @brief: Activa el bot√≥n de guardar dependiendo de los checbox marcados
             y si se ha especificado carpeta de salida
     '''
     def activaGuardar(self):
 
-        # Si el checbox de el algoritmo Douglas Peucker est· marcado
+        # Si el checbox de el algoritmo Douglas Peucker est√° marcado
         if self.cb_dp.isChecked() or self.cb_mcm.isChecked():
             # Si se ha especificado carpeta de salida
             if self.folder:
-                # Activamos el botÛn de guardar
+                # Activamos el bot√≥n de guardar
                 self.btn_do.setEnabled(True)
 
-        # Si ning˙n checbox est· marcado
+        # Si ning√∫n checbox est√° marcado
         else:
-            # Desactivamos el botÛn de guardar
+            # Desactivamos el bot√≥n de guardar
             self.btn_do.setEnabled(False)
 
 
     '''
     @method: __showPreviewCanvas
-    @brief: Muestra la previsualizaciÛn de aplicar el algoritmo con el par·metro
+    @brief: Muestra la previsualizaci√≥n de aplicar el algoritmo con el par√°metro
             seleccionado
     @param: algorithm - nombre del algoritmo a aplicar
     '''
@@ -272,13 +272,13 @@ class MainWindow(QMainWindow):
 
         # Si el algoritmo seleccionado es Douglas-Peucker
         if algorithm == self.Algorithms.DOUGLAS_PEUCKER :
-            # El parametro ser· el especÌficado en el spiner de Douglas-Peucker
+            # El parametro ser√° el espec√≠ficado en el spiner de Douglas-Peucker
             param = self.spn_dp.value()
         else :
-            # El parametro ser· el especÌficado en el spiner de McMaster
+            # El parametro ser√° el espec√≠ficado en el spiner de McMaster
             param = self.spn_mcm.value()
 
-        # Aplicamos el algoritmo con el par·metro introducido sobre la capa
+        # Aplicamos el algoritmo con el par√°metro introducido sobre la capa
         self.simplify.applyAlgorithm(algorithm, param)
 
         # Se activa el checkbox de suavizado
@@ -291,16 +291,16 @@ class MainWindow(QMainWindow):
         # la capa de salida almacenada en el objeto de la clase GeneraLine
         self.preview = QgsMapCanvasLayer(self.simplify.layer_salida)
 
-        # Conectamos al checkbox la funciÛn para cambiar la visualizaciÛn de la capa generalizada
+        # Conectamos al checkbox la funci√≥n para cambiar la visualizaci√≥n de la capa generalizada
         self.cb_suav.clicked.connect( partial(self.toggleCanvasVisibilityLayer, self.preview) )
 
-        # AÒadimos al canvas las dos capas (se visualizan)
+        # A√±adimos al canvas las dos capas (se visualizan)
         self.canvas.setLayerSet([ self.original, self.preview ])
 
 
     '''
     @method: __openDialog
-    @brief: Muestra un di·logo para seleccionar el archivo SHP
+    @brief: Muestra un di√°logo para seleccionar el archivo SHP
     '''
     def __openDialog(self):
         # Se crea un objeto del tipo QFileDialog
@@ -308,20 +308,20 @@ class MainWindow(QMainWindow):
 
         # Busca por archivos existentes en el sistema
         dlg.setFileMode(QFileDialog.ExistingFile)
-        # Solo mostrar archivos con extensiÛn shp
+        # Solo mostrar archivos con extensi√≥n shp
         dlg.setFilter("shapefile (*.shp)")
 
         # Cuando devuelva True ( Cuando se haya seleccionado la carpeta de salida )
         if dlg.exec_():
             # Obtenemos la ruta del archivo
             filepath = map(str, list(dlg.selectedFiles()))[0]
-            # Llamamos a la funciÛn __addLayer con la ruta del archivo para aÒadirlo como capa
+            # Llamamos a la funci√≥n __addLayer con la ruta del archivo para a√±adirlo como capa
             self.__addLayer(filepath)
 
 
     '''
     @method: __openDialog_folder
-    @brief: Muestra un di·logo para seleccionar la carpeta de salida
+    @brief: Muestra un di√°logo para seleccionar la carpeta de salida
     '''
     def __openDialog_folder(self):
         # Crea un dialogo para seleccionar un directorio y devuelve la ruta
@@ -330,7 +330,7 @@ class MainWindow(QMainWindow):
         # Muestra en el label la ruta de la carpeta de salida
         self.label_selected_folder.setText(self.folder)
 
-        # Llamamos a la funciÛn activaGuardar
+        # Llamamos a la funci√≥n activaGuardar
         self.activaGuardar()
 
     '''
@@ -345,36 +345,36 @@ class MainWindow(QMainWindow):
 
         # Si la capa no es de tipo lineString
         if not layer.geometryType()==1:
-            # Devuelve un mensaje de aviso y no contin˙a
+            # Devuelve un mensaje de aviso y no contin√∫a
             QMessageBox.information(None,'Warning', 'No se trata de una capa LineString')
             return
 
         # Creamos un objeto de tipo QgsMapCanvasLayer
-        # De esta forma podremos activar o desactivar la visualizaciÛn a partir de la capa
+        # De esta forma podremos activar o desactivar la visualizaci√≥n a partir de la capa
         # y no utilizando la clase QgsLegend
         self.original = QgsMapCanvasLayer(layer)
 
         # Asignamos la capa al objeto de la clase GeneraLine ( capa de entrada )
         self.simplify.setLayer(layer)
 
-        # Ponemos al canvas la extensiÛn de la capa de entrada
+        # Ponemos al canvas la extensi√≥n de la capa de entrada
         self.canvas.setExtent(layer.extent())
 
-        # AÒadimos al canvas la capa original
+        # A√±adimos al canvas la capa original
         self.canvas.setLayerSet([self.original])
 
-        # Le aplicamos simbologÌa
+        # Le aplicamos simbolog√≠a
         symbols = layer.rendererV2().symbols()
         symbol = symbols[0]
         symbol.setColor(QtGui.QColor.fromRgb(204, 51, 51))
 
         # Activamos botones y checkbox para que se pueda interactuar
 
-        # BotÛn previsualizar la generalizaciÛn de Douglas-Peucker
+        # Bot√≥n previsualizar la generalizaci√≥n de Douglas-Peucker
         self.btn_prev_dp.setEnabled(True)
-        # BotÛn previsualizar la generalizaciÛn de McMaster
+        # Bot√≥n previsualizar la generalizaci√≥n de McMaster
         self.btn_prev_mcm.setEnabled(True)
-        # Se activa el checkbox de visualizaciÛn de la capa de entrada
+        # Se activa el checkbox de visualizaci√≥n de la capa de entrada
         self.cb_ori.setEnabled(True)
         # Se marca como checked
         self.cb_ori.setCheckState(Qt.Checked)
@@ -382,7 +382,7 @@ class MainWindow(QMainWindow):
         self.cb_dp.setEnabled(True)
         # Se activa el checkbox del algoritmo McMaster
         self.cb_mcm.setEnabled(True)
-        # Se activa el botÛn de zoom extensiÛn
+        # Se activa el bot√≥n de zoom extensi√≥n
         self.btn_zoom.setEnabled(True)
         # Se activa el spiner de Douglas-Peucker
         self.spn_dp.setEnabled(True)
@@ -396,37 +396,37 @@ class MainWindow(QMainWindow):
         # Ponemos como sistema de referencia del canvas el de la capa de entrada
         self.canvas.mapRenderer().setDestinationCrs(QgsCoordinateReferenceSystem(layer.crs().authid()))
 
-        # Conectamos al checkbox de visualizaciÛn de la capa de entrada a su funciÛn
+        # Conectamos al checkbox de visualizaci√≥n de la capa de entrada a su funci√≥n
         self.cb_ori.toggled.connect( partial(self.toggleCanvasVisibilityLayer, self.original) )
 
-        # Conecta el botÛn de zoom con su funciÛn
+        # Conecta el bot√≥n de zoom con su funci√≥n
         self.btn_zoom.clicked.connect( partial( self.zoomExt, layer ) )
 
 
     '''
     @method: zoomExt
-    @brief: Realiza un zoom extensiÛn de la capa de entrada en el canvas
-    @param: layer - capa de visualizaciÛn
+    @brief: Realiza un zoom extensi√≥n de la capa de entrada en el canvas
+    @param: layer - capa de visualizaci√≥n
     '''
     def zoomExt(self,layer):
-        # Asignamos la extensiÛn del canvas a la extensiÛn de la capa
+        # Asignamos la extensi√≥n del canvas a la extensi√≥n de la capa
         self.canvas.setExtent(layer.extent())
         # Refrescamos el canvas
         self.canvas.refresh()
 
     '''
     @method: toggleCanvasVisibilityLayer
-    @brief: Se visualiza o no la capa en funciÛn del estado de la capa
-    @param: layer - capa de visualizaciÛn
+    @brief: Se visualiza o no la capa en funci√≥n del estado de la capa
+    @param: layer - capa de visualizaci√≥n
     '''
     def toggleCanvasVisibilityLayer(self, layer):
-        # Boolean del estado de visualizaciÛn la capa
+        # Boolean del estado de visualizaci√≥n la capa
         visibility = layer.isVisible()
 
-        # Asignamos la visualizaciÛn de la capa a lo contrario que habÌa antes
+        # Asignamos la visualizaci√≥n de la capa a lo contrario que hab√≠a antes
         layer.setVisible(not visibility)
 
-        # Hay que volver a aÒadir las capas para que se muestren
+        # Hay que volver a a√±adir las capas para que se muestren
         layerSet = [ l for l in [self.original, self.preview] if l]
         self.canvas.setLayerSet(layerSet)
 
@@ -442,7 +442,7 @@ class MainWindow(QMainWindow):
 
         #iface.mapCanvas().zoomScale(1 / (self.scaleControl.scale() if not self.scaleControl.scale() == 0 else 1 ) )
 
-        # Modificamos la escala del canvas en funciÛn del QgsScaleWidget
+        # Modificamos la escala del canvas en funci√≥n del QgsScaleWidget
         self.canvas.zoomScale(1 / (self.scaleControl.scale() if not self.scaleControl.scale() == 0 else 1 ) )
 
         # Refrescamos el canvas
@@ -454,14 +454,14 @@ class MainWindow(QMainWindow):
             Modifica la escala del QgsScaleWidget.
     '''
     def on_canvas_scale_changed(self, scale):
-        # Modifica la escala del QgsScaleWidget en funciÛn de la escala del canvas
+        # Modifica la escala del QgsScaleWidget en funci√≥n de la escala del canvas
         self.scaleControl.setScale(1 / scale)
 
 
     '''
     @method: __init_ui
     @brief: Inicializa los componentes del formulario. Obtenido de uic.
-            AÒadiÈndole componente de QGIS: Canvas, QgsScaleWidget
+            A√±adi√©ndole componente de QGIS: Canvas, QgsScaleWidget
     '''
     def __init_ui(self):
         # solo hemos tenido que crear el canvas y el QgsScaleWidget
@@ -482,7 +482,7 @@ class MainWindow(QMainWindow):
         self.verticalLayout_3.addLayout(self.canvas_container)
 ```
 
-A continuaciÛn mostramos la clase **``GeneraLine``** que es la encargada de realizar los algoritmos.
+A continuaci√≥n mostramos la clase **``GeneraLine``** que es la encargada de realizar los algoritmos.
 
 ```python
 
@@ -496,13 +496,13 @@ class Algorithms:
 
 '''
 @class: GeneraLine
-@brief: Clase que servir· para ejecutar los algoritmos
-        de suavizado y reducciÛn de puntos sobre una capa de LÌneas
+@brief: Clase que servir√° para ejecutar los algoritmos
+        de suavizado y reducci√≥n de puntos sobre una capa de L√≠neas
 @param: layer - Capa de entrada
 '''
 class GeneraLine:
 
-    # Variable de clase est·tica que almacena la clase Algoritmos
+    # Variable de clase est√°tica que almacena la clase Algoritmos
     Algorithms = Algorithms
 
     # Lista con los algoritmos posibles
@@ -512,7 +512,7 @@ class GeneraLine:
     def __init__(self, layer = None):
 
         # Variable de clase self.layer_salida
-        # Almacenar· las features de salida
+        # Almacenar√° las features de salida
         self.layer_salida = None
 
         # Si se le pasa layer al constructor
@@ -524,7 +524,7 @@ class GeneraLine:
     @method: setLayer
     @brief: Asignamos como variable de clase la capa que se le pasa
             y creamos la capa de salida en memoria (layer_salida)
-            con los par·metros de la capa de entrada (crs, nombre, ...)
+            con los par√°metros de la capa de entrada (crs, nombre, ...)
     '''
     def setLayer(self, layer):
         # Asignamos la capa
@@ -538,13 +538,13 @@ class GeneraLine:
                                         , 'generalizacion_{}'.format(self.layer.name())
                                         , 'memory' )
 
-        # Cambiamos la simbologÌa
+        # Cambiamos la simbolog√≠a
         symbols = self.layer_salida.rendererV2().symbols()
         symbol = symbols[0]
         # Cambiamos el color de la capa de salida a un tono azulado
         symbol.setColor(QtGui.QColor.fromRgb(102, 102, 255))
 
-        # AÒadimos las capas al registro de QGIS
+        # A√±adimos las capas al registro de QGIS
         registry.addMapLayer(self.layer)
         registry.addMapLayer(self.layer_salida)
 
@@ -561,9 +561,9 @@ class GeneraLine:
         # Comprobamos el nombre del algoritmo
         if name not in self.algorithms : return None
 
-        # Comenzamos la ediciÛn sobre la capa de salida
+        # Comenzamos la edici√≥n sobre la capa de salida
         with edit(self.layer_salida):
-            # Metemos la lÛgica dentro de un bloque try-except
+            # Metemos la l√≥gica dentro de un bloque try-except
             try :
                 # Eliminamos las features que puedan haber
                 # en la capa de salida (de proceso anteriores)
@@ -573,73 +573,73 @@ class GeneraLine:
                 # Recorreremos todas las features de la capa de entrada
                 for feature in self.layer.getFeatures():
 
-                    # Obtenemos una referencia de la geometrÌa
+                    # Obtenemos una referencia de la geometr√≠a
                     geom = feature.geometry()
 
                     # Creamos una feature temporal
-                    # Servir· para recorrer geometrÌas multiparte
+                    # Servir√° para recorrer geometr√≠as multiparte
                     temp_feature = QgsFeature()
 
-                    # Comprobamos la geomtrÌa
+                    # Comprobamos la geomtr√≠a
                     if not geom : continue
 
                     # Se crea un nuevo feature (temporal)
-                    # Servir· para crear la feature de la capa de salida
+                    # Servir√° para crear la feature de la capa de salida
                     f = QgsFeature()
 
 
-                    # Si la geometrÌa es multiparte (MULTILINESTRING)
+                    # Si la geometr√≠a es multiparte (MULTILINESTRING)
                     if geom.isMultipart():
                         # Recorremos cada LineString (geom) dentro del MultiLineString
                         for geom_ in geom.asGeometryCollection():
 
-                            # Asignamos la geometrÌa a la feature temporal
+                            # Asignamos la geometr√≠a a la feature temporal
                             temp_feature.setGeometry(geom_)
 
-                            # Extraemos los puntos de la geomtrÌa
+                            # Extraemos los puntos de la geomtr√≠a
                             points = self.__extractPoints(temp_feature)
 
                             # Ejecutamos el algoritmo pertinente
-                            # sobre los puntos extraidos de la geometrÌa que estamos recorriendo
+                            # sobre los puntos extraidos de la geometr√≠a que estamos recorriendo
                             if name == self.Algorithms.MC_MASTER:
                                 resultPoints = [ QgsPoint(*x) for x in self.__mcMaster(points, param) ] #if len(x) > 1 ]
                             else :
                                 resultPoints = [ QgsPoint(*x) for x in self.__douglasPeucker(points, param) ] #if len(x) > 1 ]
 
-                            # Obtenemoss la geometrÌa (Polyline) resultante de aplicar el algoritmo
+                            # Obtenemoss la geometr√≠a (Polyline) resultante de aplicar el algoritmo
                             resultLine = QgsGeometry.fromPolyline(resultPoints)
-                            # AÒadimos la geomtrÌa a la feature temporal
+                            # A√±adimos la geomtr√≠a a la feature temporal
                             f.setGeometry(resultLine)
 
-                            # AÒadimos la feature a la capa de salida
+                            # A√±adimos la feature a la capa de salida
                             self.layer_salida.addFeature(f)
 
-                    # Si la geometrÌa no es multiparte
+                    # Si la geometr√≠a no es multiparte
                     else :
 
-                        # Extraemos los puntos de la geomtrÌa
+                        # Extraemos los puntos de la geomtr√≠a
                         points = self.__extractPoints(feature)
 
                         # Se crea un nuevo feature (temporal)
-                        # Servir· para crear la feature de la capa de salida
+                        # Servir√° para crear la feature de la capa de salida
                         f = QgsFeature()
 
                         # Ejecutamos el algoritmo pertinente
-                        # sobre los puntos extraidos de la geometrÌa que estamos recorriendo
+                        # sobre los puntos extraidos de la geometr√≠a que estamos recorriendo
                         if name == self.Algorithms.MC_MASTER:
                             resultPoints = [ QgsPoint(*x) for x in self.__mcMaster(points, param) ] #if len(x) > 1 ]
                         else :
                             resultPoints = [ QgsPoint(*x) for x in self.__douglasPeucker(points, param) ] #if len(x) > 1 ]
 
 
-                        # Obtenemoss la geometrÌa (Polyline) resultante de aplicar el algoritmo
+                        # Obtenemoss la geometr√≠a (Polyline) resultante de aplicar el algoritmo
                         resultLine = QgsGeometry.fromPolyline(resultPoints)
-                        # AÒadimos la geomtrÌa a la feature temporal
+                        # A√±adimos la geomtr√≠a a la feature temporal
                         f.setGeometry(resultLine)
 
-                        # AÒadimos la feature a la capa de salida
+                        # A√±adimos la feature a la capa de salida
                         self.layer_salida.addFeature(f)
-            # Si se produce una excepciÛn
+            # Si se produce una excepci√≥n
             except Exception as e:
                 # mostramos un mensaje de error
                 QMessageBox.information(None, 'ERROR!', str(e))
@@ -648,45 +648,45 @@ class GeneraLine:
 
     '''
     @method: __shortestDistance
-    @brief: Devuelve la ditancia m·s corta entre
+    @brief: Devuelve la ditancia m√°s corta entre
             un punto y una recta
     @param: point - lista con los valores x,y del punto ej: [1000, 1000]
-    @param: line: lista con los par·metros a,b,c que definen una lÌnea ax + by + c = 0
-    @return: double - distancia m·s corta
+    @param: line: lista con los par√°metros a,b,c que definen una l√≠nea ax + by + c = 0
+    @return: double - distancia m√°s corta
     '''
     def __shortestDistance(self,point, line):
         # Extraemos las coordenadas del punto
         xp, yp = point
-        # Extraemos los par·metros de la lÌnea
+        # Extraemos los par√°metros de la l√≠nea
         a, b, c = line
-        # Calculamos y deolvemos la ditancia mÌnima entre el punto y la recta
+        # Calculamos y deolvemos la ditancia m√≠nima entre el punto y la recta
         return math.fabs(a*xp + b*yp + c)/math.sqrt(a**2 + b**2)
 
     '''
     @method: __extractPoints
     @brief: Extrae los puntos de una feature (simple)
     @param: feature - feature de entrada
-    @return: [] - lista de puntos de la geomtrÌa del feature pasado como par·metro
+    @return: [] - lista de puntos de la geomtr√≠a del feature pasado como par√°metro
     '''
     def __extractPoints(self, feature):
-        # Obtenemos una referencia de la geometrÌa
+        # Obtenemos una referencia de la geometr√≠a
         geom = feature.geometry()
 
-        # Creamos una lista vacÌa
+        # Creamos una lista vac√≠a
         points = []
 
-        # Comprobamos que la geometrÌa no sea None
-        # En cuyo caso devolvemos una lista vacÌa
+        # Comprobamos que la geometr√≠a no sea None
+        # En cuyo caso devolvemos una lista vac√≠a
         if geom == None: return points
 
         # contador
         i = 0
 
-        # Bucle while que recorre los  vÈrtices de
-        # la geometrÌa
+        # Bucle while que recorre los  v√©rtices de
+        # la geometr√≠a
         while(geom.vertexAt(i) != QgsPoint(0,0)):
-            # Obtenemos el vÈrtice seg˙n el Ìdice i
-            # y lo aÒadimos a la lista
+            # Obtenemos el v√©rtice seg√∫n el √≠dice i
+            # y lo a√±adimos a la lista
             points.append(geom.vertexAt(i))
             # aumentamos el contador en 1
             i += 1
@@ -696,26 +696,26 @@ class GeneraLine:
 
     '''
     @method: __mcMaster
-    @brief: Aplica el algoritmo de generalizaciÛn de McMaster
-    @param: points - lista de puntos de la geomtrÌa de la capa de entrada
-    @param:  mu - n˙mero de vertices que entran en el c·lculo de la media (impar > 1)
-    @return: [] - lista de puntos con las coordenadas de la lÌnea suavizada
+    @brief: Aplica el algoritmo de generalizaci√≥n de McMaster
+    @param: points - lista de puntos de la geomtr√≠a de la capa de entrada
+    @param:  mu - n√∫mero de vertices que entran en el c√°lculo de la media (impar > 1)
+    @return: [] - lista de puntos con las coordenadas de la l√≠nea suavizada
     '''
     def __mcMaster(self, points, mu):
-            # Si no hay puntos devuelve una lista vacÌa
+            # Si no hay puntos devuelve una lista vac√≠a
             if not points : return []
-            # Par·metro para el vecindario de cada vertice
+            # Par√°metro para el vecindario de cada vertice
             half_mu = int(math.floor(mu/2))
             # Longitud de la lista de puntos
             end = len(points)
 
             # Lista con los puntos del suavizado
-            # empezamos aÒadiendo los puntos primeros que quedan fuera del rango
+            # empezamos a√±adiendo los puntos primeros que quedan fuera del rango
             # [0, half_mu)
             smooth_points = map( list, points[ : half_mu ] )
             #print smooth_points
 
-            # Generamos un iterador para obtener los Ìndices de los puntos de los
+            # Generamos un iterador para obtener los √≠ndices de los puntos de los
             # cuales podemos aplicar un vecindario de mu
             for i in range(half_mu, end - half_mu):
 
@@ -729,17 +729,17 @@ class GeneraLine:
                 xcoords = [p[0] for p in computed_points]
                 ycoords = [p[1] for p in computed_points]
 
-                # Obtenemos la media geomÈtrica de los puntos que conforman el vecindario
+                # Obtenemos la media geom√©trica de los puntos que conforman el vecindario
                 mediax, mediay = sum(xcoords)/len(xcoords), sum(ycoords)/len(ycoords)
 
 
-                # Y realizamos la media geomÈtrica con la media del vecindario y el punto
+                # Y realizamos la media geom√©trica con la media del vecindario y el punto
                 # de estudio
                 x, y = (mediax + xactual)/2, (mediay + yactual)/2
-                # Finalmente lo aÒadimos a la lista de puntos del suavizado
+                # Finalmente lo a√±adimos a la lista de puntos del suavizado
                 smooth_points.append([x, y])
 
-            # finalizamos aÒadiendo los puntos primeros que quedan fuera del rango
+            # finalizamos a√±adiendo los puntos primeros que quedan fuera del rango
             # [end - half_mu, end)
             smooth_points += map( list, points[ -half_mu : ] )
 
@@ -749,18 +749,18 @@ class GeneraLine:
 
     '''
     @method: __douglasPeucker
-    @brief: Aplica el algoritmo de generalizaciÛn de Douglas-Peucker
-    @param: points - lista de puntos de la geomtrÌa de la capa de entrada
-    @param:  epsilon - distancia mÌnima para incluir el vÈrtice
-    @return: [] - lista de puntos con las coordenadas de la lÌnea generalizada
+    @brief: Aplica el algoritmo de generalizaci√≥n de Douglas-Peucker
+    @param: points - lista de puntos de la geomtr√≠a de la capa de entrada
+    @param:  epsilon - distancia m√≠nima para incluir el v√©rtice
+    @return: [] - lista de puntos con las coordenadas de la l√≠nea generalizada
     '''
     def  __douglasPeucker(self,points, epsilon):
-        # Distancia m·xima
+        # Distancia m√°xima
         dmax = 0
-        # Õndice de la posiciÛn en la lista del punto de m·xima distancia
+        # √çndice de la posici√≥n en la lista del punto de m√°xima distancia
         index = 0
 
-        # Õndice final para el bucle
+        # √çndice final para el bucle
         end = len(points) - 1
 
         # Punto inicial
@@ -768,48 +768,48 @@ class GeneraLine:
         # Punto final
         x1, y1 = points[-1]
 
-        # Par·metros de la recta
+        # Par√°metros de la recta
         a = y1 - y0
         b = -(x1 - x0)
         c = a*(-x0) - b*y0
 
 
-        # Si el primer y el ˙ltimo punto son el mismo
+        # Si el primer y el √∫ltimo punto son el mismo
         if a == 0 and b == 0 : return []
 
-        # Generamos un iterador para obtener los Ìndices
+        # Generamos un iterador para obtener los √≠ndices
         for i in range(1, end):
 
             # punto
             p = points[i]
 
-            # distancia m·s corta entre el punto y la recta
+            # distancia m√°s corta entre el punto y la recta
             d = self.__shortestDistance(p, [a, b, c])
 
             # Si la distancia es mayor que lo que haya almacenado en dmax
             if d > dmax :
-                # Guardamos el Ìndice y la distancia en las variables
+                # Guardamos el √≠ndice y la distancia en las variables
                 index = i
                 dmax = d
 
-        # Si la ditancia m·xima es mayor o igual que epsilon
+        # Si la ditancia m√°xima es mayor o igual que epsilon
         if dmax >= epsilon :
             # Realizamos el algoritmo
 
-            # res_ini almacenar· los resultados de aplicar el algoritmo otra vez
-            # (recursividad) sobre la porciÛn de la lista de puntos desde 0 hasta el Ìndice
-            # del punto de "distancia m·xima sobre la recta" + 1
+            # res_ini almacenar√° los resultados de aplicar el algoritmo otra vez
+            # (recursividad) sobre la porci√≥n de la lista de puntos desde 0 hasta el √≠ndice
+            # del punto de "distancia m√°xima sobre la recta" + 1
             res_ini = self.__douglasPeucker(points[: index + 1], epsilon)
 
-            # res_fin almacenar· los resultados de aplicar el algoritmo otra vez
-            # (recursividad) sobre la porciÛn de la lista de puntos desde el Ìndice
-            # del punto de "distancia m·xima sobre la recta" hasta len(points)
+            # res_fin almacenar√° los resultados de aplicar el algoritmo otra vez
+            # (recursividad) sobre la porci√≥n de la lista de puntos desde el √≠ndice
+            # del punto de "distancia m√°xima sobre la recta" hasta len(points)
             res_fin = self.__douglasPeucker(points[index : ], epsilon)
 
             # Juntamos las dos listas resultantes y devolvemos el array juntado
             return res_ini[:-1] + res_fin
 
-        # Si la distancia m·xima es menor que epsilon
+        # Si la distancia m√°xima es menor que epsilon
         else :
             # Devolvemos una lista con los puntos inicial y final
             return [ points[0], points[-1] ]
@@ -821,40 +821,40 @@ class GeneraLine:
 
 Al terminar y depurar el programa hicimos varias pruebas para ver que tal funciona.
 
-#### Capa de OrografÌa (curvas) ####
+#### Capa de Orograf√≠a (curvas) ####
 
-Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya que pierden su significado geogr·fico y nos inventarÌamos una forma del terreno distinta, hemos probado para ver como funcionan los algorÌtmos sobre un curvado tan complejo con distintos valores de par·metro.
+Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya que pierden su significado geogr√°fico y nos inventar√≠amos una forma del terreno distinta, hemos probado para ver como funcionan los algor√≠tmos sobre un curvado tan complejo con distintos valores de par√°metro.
 
-- Algoritmo Douglas-Peucker distancia mÌnima 50
+- Algoritmo Douglas-Peucker distancia m√≠nima 50
     
-    |  Algoritmo |  Par·metro |
+    |  Algoritmo |  Par√°metro |
     |---|---|
     | Douglas Peucker  |  50 |
 
     
 ![ORO DP dM 50](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_50.png)
 
-- Algoritmo Douglas Peucker distancia mÌnima 20
+- Algoritmo Douglas Peucker distancia m√≠nima 20
     
-    |  Algoritmo |  Par·metro |
+    |  Algoritmo |  Par√°metro |
     |---|---|
     | Douglas Peucker  |  20 |
     
 ![ORO DP dM 5](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_20.png)
 
-- Algoritmo Douglas-Peucker - distancia mÌnima 1
+- Algoritmo Douglas-Peucker - distancia m√≠nima 1
     
-    |  Algoritmo |  Par·metro |
+    |  Algoritmo |  Par√°metro |
     |---|---|
     | Douglas Peucker  |  1 |
     
 ![ORO DP dM 1](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_1.png)
 
-**Vemos que el algoritmo funciona mejor para este caso con una distancia mÌnima pequeÒa.**
+**Vemos que el algoritmo funciona mejor para este caso con una distancia m√≠nima peque√±a.**
 
 - Algoritmo McMaster - vecindario 9
     
-    |  Algoritmo |  Par·metro |
+    |  Algoritmo |  Par√°metro |
     |---|---|
     | McMaster  |  9 |
     
@@ -863,21 +863,21 @@ Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya q
 
 - Algoritmo McMaster - vecindario 21
     
-    |  Algoritmo |  Par·metro |
+    |  Algoritmo |  Par√°metro |
     |---|---|
     | McMaster  |  21 |
     
 ![ORO MCM V 9](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_mcm_21.png)
     
-**Como las curvas varÌan mucho en vecindarios pequeÒos** se observa al aplicar vecindarios m·s grandes como el suavizado se aleja de la curva original dr·sicamente al realizar la media de todo el vecindario.
+**Como las curvas var√≠an mucho en vecindarios peque√±os** se observa al aplicar vecindarios m√°s grandes como el suavizado se aleja de la curva original dr√°sicamente al realizar la media de todo el vecindario.
 
-#### Capa de HidrografÌa ####
+#### Capa de Hidrograf√≠a ####
 
-Para lineas menos cambiantes dependiende de nuestro prÛposito nos servir· uno mejor que otro. Para generalizar usaremos el algoritmo de ``Douglas-Peucker`` (*eliminando puntos*) y para suavizar usaremos el algorÌtmo de ``McMaster`` el cual atenuar· los picos generados por la intersecciÛn en los vÈrtices (curvar· la linea).
+Para lineas menos cambiantes dependiende de nuestro pr√≥posito nos servir√° uno mejor que otro. Para generalizar usaremos el algoritmo de ``Douglas-Peucker`` (*eliminando puntos*) y para suavizar usaremos el algor√≠tmo de ``McMaster`` el cual atenuar√° los picos generados por la intersecci√≥n en los v√©rtices (curvar√° la linea).
 
 Primero aplicamos ``Douglas-Peucker`` sobre la capa de entrada:
 
-|  Algoritmo |  Par·metro |
+|  Algoritmo |  Par√°metro |
 |---|---|
 | Douglas-Peucker  |  15 |
 
@@ -885,15 +885,15 @@ Primero aplicamos ``Douglas-Peucker`` sobre la capa de entrada:
 
 Luego aplicamos McMaster sobre la capa anterior:
 
-|  Algoritmo |  Par·metro |
+|  Algoritmo |  Par√°metro |
 |---|---|
 | McMaster  |  5 |
 
 ![PRUEBA 1 HIDRO MCM 5](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba22.png)
 
-Visualizamos ambas capas y realizamos una comparaciÛn visual:
+Visualizamos ambas capas y realizamos una comparaci√≥n visual:
 
-![COMPARACI”N ORIGINAL](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba33.png)
+![COMPARACI√ìN ORIGINAL](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba33.png)
 
 
 # Conclusiones
@@ -902,17 +902,17 @@ Tras realizar varias pruebas con el software generado podemos poner en la mesa d
 
 - **Respecto al UI generado**
 
-Se ha elaborado un UI bastante logrado que alberga muchas funcionalidades. Se podrÌan mejorar diversos aspectos de menor importancia que podrÌan ver luz en futuros releases.
+Se ha elaborado un UI bastante logrado que alberga muchas funcionalidades. Se podr√≠an mejorar diversos aspectos de menor importancia que podr√≠an ver luz en futuros releases.
 
-Un aspecto importante que no se ha llegado a conseguir pero que se puede ver en el archivo [project_sig2.py](https://github.com/hectormg92/pyqgis-awesome-linestring-generalizer/blob/master/project_sig2.py) es ejecutar los procesos de la clase GeneraLine en otro hilo de ejecuciÛn para no interferir con el hilo de renderizado del UI y de esta manera no bloquearlo.
+Un aspecto importante que no se ha llegado a conseguir pero que se puede ver en el archivo [project_sig2.py](https://github.com/hectormg92/pyqgis-awesome-linestring-generalizer/blob/master/project_sig2.py) es ejecutar los procesos de la clase GeneraLine en otro hilo de ejecuci√≥n para no interferir con el hilo de renderizado del UI y de esta manera no bloquearlo.
 
 - **Respecto a los algoritmos**
 
-El par·metro a introducir en el algoritmo de Douglas Peucker, para mejorar la experiencia del usuario, deberÌa ser un n˙mero comprendido entre 0 y 1 (escalando con la distancia m·xima entre los distintos vÈrtices con la recta (que une el punto inicial y final).
+El par√°metro a introducir en el algoritmo de Douglas Peucker, para mejorar la experiencia del usuario, deber√≠a ser un n√∫mero comprendido entre 0 y 1 (escalando con la distancia m√°xima entre los distintos v√©rtices con la recta (que une el punto inicial y final).
 
-Adem·s esta misma idea tambiÈn se podrÌa aplicar al algoritmo McMster con el n˙mero de vÈrtices m·ximo (ya que el mÌnimo es tres).
+Adem√°s esta misma idea tambi√©n se podr√≠a aplicar al algoritmo McMster con el n√∫mero de v√©rtices m√°ximo (ya que el m√≠nimo es tres).
 
-Se podrÌa llevar a cabo una funcionalidad extra que concatenara distintas Ûrdenes para ejecutar varios algoritmos de una vez con el resultado del proceso anterior (Parecido a como hace ArcMap con ModelBuilder).
+Se podr√≠a llevar a cabo una funcionalidad extra que concatenara distintas √≥rdenes para ejecutar varios algoritmos de una vez con el resultado del proceso anterior (Parecido a como hace ArcMap con ModelBuilder).
 Por ejemplo:
 
 - Proceso 1 : Aplicar Douglas Peucker a la capa de entrada
