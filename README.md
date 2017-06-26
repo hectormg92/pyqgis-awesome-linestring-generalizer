@@ -1,5 +1,7 @@
 # pyqgis-awesome-linestring-generalizer
 
+![Animación Douglas Peucker](https://upload.wikimedia.org/wikipedia/commons/3/30/Douglas-Peucker_animated.gif)
+
 # Índice
 ***
 
@@ -19,9 +21,7 @@ Hemos decidido abordarlo desde **``QGIS (PyQGIS)``** principalmente por tratarse
 #### Algoritmos:
 
  **Algoritmo de eliminación de Douglas-Peucker**
-
-![Animación Douglas Peucker](https://upload.wikimedia.org/wikipedia/commons/3/30/Douglas-Peucker_animated.gif)
-
+ 
 >El algoritmo de Douglas-Peucker se usa para reducir el número de puntos utilizados en la aproximación de una curva. El objetivo del algoritmo es, dada una curva compuesta por segmentos, encontrar una curva similar aproximada con menos puntos. El algoritmo define un parámetro basado en la máxima distancia entre la curva original y la simplificada.
 
 
@@ -818,11 +818,14 @@ class GeneraLine:
 ```
 
 # Pruebas y Resultados
+
 Al terminar y depurar el programa hicimos varias pruebas para ver que tal funciona.
-- Capa de Orografía (curvas)
+
+#### Capa de Orografía (curvas) ####
+
 Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya que pierden su significado geográfico y nos inventaríamos una forma del terreno distinta, hemos probado para ver como funcionan los algorítmos sobre un curvado tan complejo con distintos valores de parámetro.
 
-    - Algoritmo Douglas-Peucker - distancia mínima 50
+- Algoritmo Douglas-Peucker distancia mínima 50
     
     |  Algoritmo |  Parámetro |
     |---|---|
@@ -831,8 +834,7 @@ Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya q
     
 ![ORO DP dM 50](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_50.png)
 
-    - Algoritmo Douglas-Peucker - distancia mínima 20
-    
+- Algoritmo Douglas Peucker distancia mínima 20
     
     |  Algoritmo |  Parámetro |
     |---|---|
@@ -840,7 +842,7 @@ Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya q
     
 ![ORO DP dM 5](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_20.png)
 
-    - Algoritmo Douglas-Peucker - distancia mínima 1
+- Algoritmo Douglas-Peucker - distancia mínima 1
     
     |  Algoritmo |  Parámetro |
     |---|---|
@@ -848,8 +850,9 @@ Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya q
     
 ![ORO DP dM 1](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_1.png)
 
-    Vemos que el algoritmo funciona mejor para este caso con una distancia mínima pequeña.
-    - Algoritmo McMaster - vecindario 9
+**Vemos que el algoritmo funciona mejor para este caso con una distancia mínima pequeña.**
+
+- Algoritmo McMaster - vecindario 9
     
     |  Algoritmo |  Parámetro |
     |---|---|
@@ -858,7 +861,7 @@ Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya q
 ![ORO MCM V 9](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_mcm_9.png)
 
 
-    - Algoritmo McMaster - vecindario 21
+- Algoritmo McMaster - vecindario 21
     
     |  Algoritmo |  Parámetro |
     |---|---|
@@ -868,7 +871,7 @@ Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya q
     
 **Como las curvas varían mucho en vecindarios pequeños** se observa al aplicar vecindarios más grandes como el suavizado se aleja de la curva original drásicamente al realizar la media de todo el vecindario.
 
-- Capa de Hidrografía
+#### Capa de Hidrografía ####
 
 Para lineas menos cambiantes dependiende de nuestro próposito nos servirá uno mejor que otro. Para generalizar usaremos el algoritmo de ``Douglas-Peucker`` (*eliminando puntos*) y para suavizar usaremos el algorítmo de ``McMaster`` el cual atenuará los picos generados por la intersección en los vértices (curvará la linea).
 
@@ -914,12 +917,3 @@ Por ejemplo:
 
 - Proceso 1 : Aplicar Douglas Peucker a la capa de entrada
 - Proceso 2 : Aplicar McMaster a la capa resultante del proceso 1
-
-
-
-
-
-    
-    
-    
-    
