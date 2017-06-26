@@ -10,6 +10,7 @@ from PyQt4.QtCore import SIGNAL, Qt
 from PyQt4.QtGui import QFileDialog, QMainWindow, QMessageBox
 from functools import partial
 
+# Es necesario ejecutar el script desde el entorno de QGis
 
 registry = QgsMapLayerRegistry.instance()
 #legend = iface.legendInterface()
