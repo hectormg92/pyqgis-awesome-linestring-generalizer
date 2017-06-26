@@ -835,7 +835,23 @@ Tras realizar varias pruebas con el software generado podemos poner en la mesa d
 
 Se ha elaborado un UI bastante logrado que alberga muchas funcionalidades. Se podrían mejorar diversos aspectos de menor importancia que podrían ver luz en futuros releases.
 
-Un aspecto importante que no se ha llegado a conseguir pero que se puede ver en el archivo [project_sig2.py](https://github.com/hectormg92/pyqgis-awesome-linestring-generalizer/blob/master/project_sig2.py)
+Un aspecto importante que no se ha llegado a conseguir pero que se puede ver en el archivo [project_sig2.py](https://github.com/hectormg92/pyqgis-awesome-linestring-generalizer/blob/master/project_sig2.py) es ejecutar los procesos de la clase GeneraLine en otro hilo de ejecución para no interferir con el hilo de renderizado del UI y de esta manera no bloquearlo.
+
+- **Respecto a los algoritmos**
+
+El parámetro a introducir en el algoritmo de Douglas Peucker, para mejorar la experiencia del usuario, debería ser un número comprendido entre 0 y 1 (escalando con la distancia máxima entre los distintos vértices con la recta (que une el punto inicial y final).
+
+Además esta misma idea también se podría aplicar al algoritmo McMster con el número de vértices máximo (ya que el mínimo es tres).
+
+Se podría llevar a cabo una funcionalidad extra que concatenara distintas órdenes para ejecutar varios algoritmos de una vez con el resultado del proceso anterior (Parecido a como hace ArcMap con ModelBuilder).
+Por ejemplo:
+
+- Proceso 1 : Aplicar Douglas Peucker a la capa de entrada
+- Proceso 2 : Aplicar McMaster a la capa resultante del proceso 1
+
+
+
+
 
     
     
