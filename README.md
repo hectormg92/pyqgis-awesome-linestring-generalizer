@@ -17,11 +17,14 @@ El proyecto final de la asignatura **`Desarrollo de aplicaciones SIG`** se ha ce
 Hemos decidido abordarlo desde **``QGIS (PyQGIS)``** principalmente por tratarse de software libre.
 
 #### Algoritmos:
- - Algoritmo de eliminación de ***``Douglas-Peucker``***
+
+ **Algoritmo de eliminación de Douglas-Peucker**
 
 ![Animación Douglas Peucker](https://upload.wikimedia.org/wikipedia/commons/3/30/Douglas-Peucker_animated.gif)
 
-El algoritmo de Douglas-Peucker se usa para reducir el número de puntos utilizados en la aproximación de una curva. El objetivo del algoritmo es, dada una curva compuesta por segmentos, encontrar una curva similar aproximada con menos puntos. El algoritmo define un parámetro basado en la máxima distancia entre la curva original y la simplificada.
+>El algoritmo de Douglas-Peucker se usa para reducir el número de puntos utilizados en la aproximación de una curva. El objetivo del algoritmo es, dada una curva compuesta por segmentos, encontrar una curva similar aproximada con menos puntos. El algoritmo define un parámetro basado en la máxima distancia entre la curva original y la simplificada.
+
+
 El algoritmo seguido sería el siguiente:
 
 ```javascript
@@ -53,9 +56,10 @@ function DouglasPeucker(PointList[], epsilon)
 end
 ```
 
-En resumen, el algoritmo construye una linea desde el primer hasta el último punto de la linea y busca el vertice con una mayor distancia (que forme un ángulo recto) al segmento y lo agrega si está a una distancia mayor a epsilon. Con los dos segmentos formados se repetiría el proceso hasta no haber puntos o que estos no superen el umbral epsilon. Es un proceso recursivo dónde la nueva curva es generada a partir de los puntos que han permanecido tras aplicar el algoritmo.
+>En resumen, el algoritmo construye una linea desde el primer hasta el último punto de la linea y busca el vertice con una mayor distancia (que forme un ángulo recto) al segmento y lo agrega si está a una distancia mayor a epsilon. Con los dos segmentos formados se repetiría el proceso hasta no haber puntos o que estos no superen el umbral epsilon. Es un proceso recursivo dónde la nueva curva es generada a partir de los puntos que han permanecido tras aplicar el algoritmo.
 
 **Algoritmo de suavizado de McMaster**
+
 También conocido como algoritmo de deslizamiento de McMaster. Este algoritmo dejará fijos el primer y último punto de la línea y calculará la nueva posición (posición media) de los demás puntos a partir de sus coordenadas y las de sus vecinos.
 Tiene un parámetro de entrada que es el número de vertices con los que calculará la media de las coordenadas de cada uno, por lo que este deberá ser un número impar (mismo número de vecinos a cada lado del vértice y el propio vértice). Los vértices que no entren en el vecindario de suavizado se quedarán como estaban.
 
@@ -81,12 +85,38 @@ function McMaster(PointList[], nu)
     return smooth_points[]
 ```
 
-Decir que los algoritmos planteados están escritos en pseudocódigo y no responden a ningún lenguaje de programación en sí.
+Decir que los algoritmos planteados en este apartado están escritos en pseudocódigo y no responden a ningún lenguaje de programación en sí.
 Con este algoritmo lo que se conseguirá es un suavizado de las curvas por lo que éstas no serán tan acentuadas.
 
 # Desarrollo del formulario PyQt4 mediante Qt Designer
 
+En primer hemos basado el formulario en una vista de ``Tabs`` para elegir las distintas opciones **más importantes** como:
+
+- ``Parámetros de los algoritmos``
+- ``Carpeta de salida``
+
+En segundo lugar contamos con un separador y un Layout Horizontal que contiene los siguientes componentes:
+
+- ``Botones para activar/desactivar la visualización`` de la capa original y la capa previsualizada.
+- ``Zoom extensión`` a la capa original
+- ``Control de escala`` para el canvas
+
+A continuación tenemos otro Layout Horizontal que contiene un ``canvas``.
+Seguidamente tenemos otro Layout Horizontal (entre separadores) que contiene dos checkboxes para elegir *el algoritmo que se desea aplicar*.
+
+Finalmente tenemos varios botones:
+
+- ``Botón para cargar un shapefile``
+- ``Botón para guardar``
+
+![UI 1](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/ui1.png)
+
+![UI 2](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/ui2.png)
+
+![UI 3](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/ui3.png)
+
 # Desarrollo de la práctica
+
 En primer lugar hemos utilizado ``uic.py`` para convertir el archivo ``.ui`` en un archivo ``.py`` que usaremos como archivo del proyecto.
 
 Hemos añadido en la parte superior del archivo los imports necesarios para realizar nuestro proyecto:
@@ -111,7 +141,7 @@ Después de los imports tomamos una referencia del **registro** de ``QGIS``:
 registry = QgsMapLayerRegistry.instance()
 ```
 
-A continuación se muestra el código del formulario. Mostraremos solo las partes del código escritas por nosotros y evitaremos poner el código generado por uic.
+A continuación se muestra el código del **formulario**. Mostraremos **solo las partes del código escritas por nosotros** y evitaremos poner el código generado por *uic*.
 
 ```python
 # Clase MainWindow
@@ -787,44 +817,80 @@ class GeneraLine:
 
 ```
 
-En primero lugar, lo que hicimos fue desarrollar los algoritmos en python como funciones y viendo si podriamos desarrollar otros procesos como funciones también. Por ejemplo el cálculo de la distancia mínima en el caso del algoritmo **Douglas-Peucker**, se ha desarrollado como una función externa.
-    
-Una vez desarrollados los algoritmos los metimos en una clase GeneraLine y hicimos checkeos como ver si la capa que se introduce es del tipo *`LineString(if layer.wkbType()==QGis.WKBLineString: ...)`*, comprovar si la capa es multiparte o recoger el EPSG de la capa. Para cada capa se recorrerán todos sus features y se aplicará el algoritmo seleccionado.
-
-Creamos la función *`__extractPoints(feature)`* para extraer todos los puntos de cada feature y poder así aplicar los algoritmos sobre estos.
-Con la función predefinida de PyQgis vertexAt(i), siendo i el índice del vértice, extraemos de la geometria de cada feature dichos puntos de la siguiente manera:
-
-```python
-def __extractPoints(self, feature):
-        geom = feature.geometry()
-        points = []
-        if geom == None: return points
-        i = 0
-        while(geom.vertexAt(i) != QgsPoint(0,0)):
-            points.append(geom.vertexAt(i))
-            i += 1
-        return points
-```
-
-
 # Pruebas y Resultados
 Al terminar y depurar el programa hicimos varias pruebas para ver que tal funciona.
 - Capa de Orografía (curvas)
 Sabiendo que no tiene sentido generalizar de esta forma las curvas de nivel ya que pierden su significado geográfico y nos inventaríamos una forma del terreno distinta, hemos probado para ver como funcionan los algorítmos sobre un curvado tan complejo con distintos valores de parámetro.
+
     - Algoritmo Douglas-Peucker - distancia mínima 50
-    - Algoritmo Douglas-Peucker - distancia mínima 5
+    
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | Douglas Peucker  |  50 |
+
+    
+![ORO DP dM 50](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_50.png)
+
+    - Algoritmo Douglas-Peucker - distancia mínima 20
+    
+    
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | Douglas Peucker  |  20 |
+    
+![ORO DP dM 5](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_20.png)
+
     - Algoritmo Douglas-Peucker - distancia mínima 1
+    
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | Douglas Peucker  |  1 |
+    
+![ORO DP dM 1](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_dp_1.png)
+
     Vemos que el algoritmo funciona mejor para este caso con una distancia mínima pequeña.
     - Algoritmo McMaster - vecindario 9
+    
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | McMaster  |  9 |
+    
+![ORO MCM V 9](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_mcm_9.png)
+
+
     - Algoritmo McMaster - vecindario 21
-Como las curvas varían mucho en vecindarios pequeños se observa al aplicar vecindarios más grandes como el suavizado se aleja de la curva original drásicamente al realizar la media de todo el vecindario.
+    
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | McMaster  |  21 |
+    
+![ORO MCM V 9](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/oro_mcm_21.png)
+    
+**Como las curvas varían mucho en vecindarios pequeños** se observa al aplicar vecindarios más grandes como el suavizado se aleja de la curva original drásicamente al realizar la media de todo el vecindario.
 
 - Capa de Hidrografía
-Para lineas menos cambiantes dependiende de nuestro próposito nos servirá uno mejor que otro. Para generalizar usaremos el algoritmo de Douglas-Peucker (eliminando puntos) y para suavizar usaremos el algorítmo de McMaster el cual atenuará los picos generados por la intersección en los vértices (curvará la linea).
-    - prueba1 _50
-    - hidro_dp_20
 
-    - hidro_mcm_9
+Para lineas menos cambiantes dependiende de nuestro próposito nos servirá uno mejor que otro. Para generalizar usaremos el algoritmo de ``Douglas-Peucker`` (*eliminando puntos*) y para suavizar usaremos el algorítmo de ``McMaster`` el cual atenuará los picos generados por la intersección en los vértices (curvará la linea).
+
+Primero aplicamos ``Douglas-Peucker`` sobre la capa de entrada:
+
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | Douglas-Peucker  |  15 |
+
+![PRUEBA 1 HIDRO DP 15](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba11.png)
+
+Luego aplicamos McMaster sobre la capa anterior:
+
+    |  Algoritmo |  Parámetro |
+    |---|---|
+    | McMaster  |  5 |
+
+![PRUEBA 1 HIDRO MCM 5](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba22.png)
+
+Visualizamos ambas capas y realizamos una comparación visual:
+
+![COMPARACIÓN ORIGINAL](https://raw.githubusercontent.com/hectormg92/pyqgis-awesome-linestring-generalizer/master/img/prueba33.png)
 
 
 # Conclusiones
@@ -851,3 +917,9 @@ Por ejemplo:
 
 
 
+
+
+    
+    
+    
+    
